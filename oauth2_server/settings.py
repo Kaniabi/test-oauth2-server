@@ -11,21 +11,16 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from decouple import config
 from django.core.management.utils import get_random_secret_key
+import dj_database_url
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+SECRET_KEY = config('DJANGO_SECRET_KEY', default=get_random_secret_key())
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY') or get_random_secret_key()
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = 'DJANGO_DEBUG' in os.environ
+DEBUG = config('DJANGO_DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = ["*"]
 
@@ -78,17 +73,12 @@ WSGI_APPLICATION = 'oauth2_server.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": os.environ.get("DB_NAME"),
-        "USER": os.environ.get("DB_USER"),
-        "PASSWORD": os.environ.get("DB_PASSWORD"),
-        "HOST": os.environ.get("DB_HOST"),
-        "DB_PORT": os.environ.get("DB_PORT"),
-    }
+    "default": dj_database_url.config(
+        default=f"sqlite://{BASE_DIR}/db.sqlite3",
+        conn_max_age=600,
+        ssl_require=False,
+    )
 }
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -130,3 +120,15 @@ STATIC_URL = '/static/'
 USE_X_FORWARDED_PORT = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 LOGIN_URL = '/admin/login'
+
+TEST_USERNAME = config('TEST_USERNAME', default='admin')
+TEST_EMAIL = config('TEST_EMAIL', default='admin@example.com')
+TEST_PASSWORD = config('TEST_PASSWORD', default='admin')
+
+TEST_CLIENT_NAME = config('TEST_CLIENT_NAME', default='OAuth2 Example Application')
+TEST_CLIENT_ID = config('TEST_CLIENT_ID', default='client-id')
+TEST_CLIENT_SECRET = config('TEST_CLIENT_SECRET', default='client-secret')
+TEST_REDIRECT_URIS = config(
+    'TEST_REDIRECT_URIS',
+    default='http://localhost:8000/complete/generic-oauth2/'
+)
