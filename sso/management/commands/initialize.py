@@ -23,14 +23,24 @@ class Command(BaseCommand):
 
     @staticmethod
     def create_app():
-        return Application.objects.get_or_create(
-            client_type=Application.CLIENT_CONFIDENTIAL,
-            authorization_grant_type=Application.GRANT_AUTHORIZATION_CODE,
-            name=settings.TEST_CLIENT_NAME,
-            client_id=settings.TEST_CLIENT_ID,
-            client_secret=settings.TEST_CLIENT_SECRET,
-            redirect_uris=settings.TEST_REDIRECT_URIS,
-        )[0]
+        result = Application.objects.get(client_id=settings.TEST_CLIENT_ID)
+        if result is None:
+            result = Application.objects.get_or_create(
+                client_id=settings.TEST_CLIENT_ID,
+                name=settings.TEST_CLIENT_NAME,
+                client_secret=settings.TEST_CLIENT_SECRET,
+                redirect_uris=settings.TEST_REDIRECT_URIS,
+                client_type=Application.CLIENT_CONFIDENTIAL,
+                authorization_grant_type=Application.GRANT_AUTHORIZATION_CODE,
+            )[0]
+        else:
+            result.name = settings.TEST_CLIENT_NAME
+            result.client_secret = settings.TEST_CLIENT_SECRET
+            result.redirect_uris = settings.TEST_REDIRECT_URIS
+            result.client_type = Application.CLIENT_CONFIDENTIAL
+            result.authorization_grant_type = Application.GRANT_AUTHORIZATION_CODE
+            result.save()
+        return result
 
     def print_hello(self, user, app: Application):
         separator = '-' * 79
