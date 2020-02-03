@@ -8,7 +8,7 @@ wait_for_db () {
   # command during the first init, and pg_isready will then immediately quit
   # with "rejecting connections" error.
   for _ in $(seq 5); do
-    if ! pg_isready -h $DB_HOST -t 360
+    if ! pg_isready -h $PGHOST -t 360
     then
       sleep 3  # Wait 3s between retries
     else
@@ -21,7 +21,7 @@ cd /app
 if [ $# -eq 0 ]; then
     # No arguments, simply run the app
     wait_for_db
-    createdb $DB_NAME || true
+    createdb $PGNAME || true
     python /app/manage.py migrate
     python /app/manage.py initialize
     nginx -g "daemon off;" &                            # Start http web-server

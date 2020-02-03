@@ -2,16 +2,18 @@ version: '3'
 services:
   web:
     build: .
-    image: Kaniabi/test-oauth2-server:dev
+    image: kaniabi/test-oauth2-server:dev
     ports:
       - "8880:80"
     environment:
       - DATABASE_URL=postgres://oauth2:oauth2@db:5432/oauth2
       - DJANGO_SECRET_KEY=secret123
-      - DB_NAME=oauth2
-      - DB_HOST=db
+      - PGUSER=oauth2
+      - PGPASSWORD=oauth2
+      - PGDATABASE=oauth2
+      - PGHOST=db
   db:
-    image: "postgres"
+    image: uhinfra/postgis:v3
     environment:
       - POSTGRES_USER=oauth2
       - POSTGRES_PASSWORD=oauth2

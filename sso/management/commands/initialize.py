@@ -23,23 +23,18 @@ class Command(BaseCommand):
 
     @staticmethod
     def create_app():
-        result = Application.objects.get(client_id=settings.TEST_CLIENT_ID)
-        if result is None:
-            result = Application.objects.get_or_create(
+        try:
+            result = Application.objects.get(client_id=settings.TEST_CLIENT_ID)
+        except Application.DoesNotExist:
+            result = Application(
                 client_id=settings.TEST_CLIENT_ID,
-                name=settings.TEST_CLIENT_NAME,
-                client_secret=settings.TEST_CLIENT_SECRET,
-                redirect_uris=settings.TEST_REDIRECT_URIS,
-                client_type=Application.CLIENT_CONFIDENTIAL,
-                authorization_grant_type=Application.GRANT_AUTHORIZATION_CODE,
-            )[0]
-        else:
-            result.name = settings.TEST_CLIENT_NAME
-            result.client_secret = settings.TEST_CLIENT_SECRET
-            result.redirect_uris = settings.TEST_REDIRECT_URIS
-            result.client_type = Application.CLIENT_CONFIDENTIAL
-            result.authorization_grant_type = Application.GRANT_AUTHORIZATION_CODE
-            result.save()
+            )
+        result.name = settings.TEST_CLIENT_NAME
+        result.client_secret = settings.TEST_CLIENT_SECRET
+        result.redirect_uris = settings.TEST_REDIRECT_URIS
+        result.client_type = Application.CLIENT_CONFIDENTIAL
+        result.authorization_grant_type = Application.GRANT_AUTHORIZATION_CODE
+        result.save()
         return result
 
     def print_hello(self, user, app: Application):
