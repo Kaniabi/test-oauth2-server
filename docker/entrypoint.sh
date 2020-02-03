@@ -21,6 +21,7 @@ cd /app
 if [ $# -eq 0 ]; then
     # No arguments, simply run the app
     wait_for_db
+    createdb $DB_NAME || true
     python /app/manage.py migrate
     python /app/manage.py initialize
     nginx -g "daemon off;" &                            # Start http web-server

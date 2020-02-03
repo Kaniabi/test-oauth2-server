@@ -7,6 +7,7 @@ RUN apk add --update --no-cache \
     make \
     nginx \
     postgresql-dev \
+    postgresql-client \
     zlib \
     zlib-dev
 

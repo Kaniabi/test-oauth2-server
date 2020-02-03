@@ -8,6 +8,8 @@ services:
     environment:
       - DATABASE_URL=postgres://oauth2:oauth2@db:5432/oauth2
       - DJANGO_SECRET_KEY=secret123
+      - DB_NAME=oauth2
+      - DB_HOST=db
   db:
     image: "postgres"
     environment:
