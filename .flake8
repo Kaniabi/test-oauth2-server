@@ -1,0 +1,16 @@
+
+[flake8]
+ignore =
+    # Ignoring max-line-length since BLACK formats some lines past max limit.
+    E501
+    # These warnings is generated once we ignore E501
+    W503
+    W504
+    D100
+    D101
+    D102
+    D106
+    D400
+    D103
+exclude =
+    __pycache__
