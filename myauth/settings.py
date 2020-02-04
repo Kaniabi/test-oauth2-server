@@ -130,7 +130,7 @@ TEST_CLIENT_NAME = config("TEST_CLIENT_NAME", default="MyApp")
 TEST_CLIENT_ID = config("TEST_CLIENT_ID", default="client-id")
 TEST_CLIENT_SECRET = config("TEST_CLIENT_SECRET", default="client-secret")
 TEST_REDIRECT_URIS = config(
-    "TEST_REDIRECT_URIS", default="http://localhost:8000/complete/generic-oauth2/"
+    "TEST_REDIRECT_URIS", default="http://localhost:8000/complete/generic-oauth2/",
 )
 
 # NOTE: This makes it safe to run both this provider and the client in the same
