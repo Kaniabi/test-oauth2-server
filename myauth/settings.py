@@ -11,16 +11,17 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-from decouple import config
-from django.core.management.utils import get_random_secret_key
-import dj_database_url
 
+from django.core.management.utils import get_random_secret_key
+
+import dj_database_url
+from decouple import config
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = config('DJANGO_SECRET_KEY', default=get_random_secret_key())
+SECRET_KEY = config("DJANGO_SECRET_KEY", default=get_random_secret_key())
 
-DEBUG = config('DJANGO_DEBUG', default=False, cast=bool)
+DEBUG = config("DJANGO_DEBUG", default=False, cast=bool)
 
 ALLOWED_HOSTS = ["*"]
 
@@ -28,51 +29,51 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'oauth2_provider',
-    'myauth',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "oauth2_provider",
+    "myauth",
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'oauth2_provider.middleware.OAuth2TokenMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "oauth2_provider.middleware.OAuth2TokenMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
 AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-    'oauth2_provider.backends.OAuth2Backend',
+    "django.contrib.auth.backends.ModelBackend",
+    "oauth2_provider.backends.OAuth2Backend",
 )
 
-ROOT_URLCONF = 'myauth.urls'
+ROOT_URLCONF = "myauth.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'myauth.wsgi.application'
+WSGI_APPLICATION = "myauth.wsgi.application"
 
 
 # Database
@@ -80,37 +81,28 @@ WSGI_APPLICATION = 'myauth.wsgi.application'
 
 DATABASES = {
     "default": dj_database_url.config(
-        default=f"sqlite://{BASE_DIR}/db.sqlite3",
-        conn_max_age=600,
-        ssl_require=False,
+        default=f"sqlite://{BASE_DIR}/db.sqlite3", conn_max_age=600, ssl_require=False,
     )
 }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
+_password_validation = "django.contrib.auth.password_validation"
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {"NAME": (f"{_password_validation}.UserAttributeSimilarityValidator",)},
+    {"NAME": (f"{_password_validation}.MinimumLengthValidator",)},
+    {"NAME": (f"{_password_validation}.CommonPasswordValidator",)},
+    {"NAME": (f"{_password_validation}.NumericPasswordValidator",)},
 ]
 
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -122,28 +114,27 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
 USE_X_FORWARDED_PORT = True
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-LOGIN_URL = '/admin/login'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+LOGIN_URL = "/admin/login"
 
-TEST_USERNAME = config('TEST_USERNAME', default='john')
-TEST_EMAIL = config('TEST_EMAIL', default='jsnow@westeros.com')
-TEST_PASSWORD = config('TEST_PASSWORD', default='snow')
-TEST_FIRST_NAME = config('TEST_FIRST_NAME', default='John')
-TEST_LAST_NAME = config('TEST_LAST_NAME', default='Snow')
+TEST_USERNAME = config("TEST_USERNAME", default="john")
+TEST_EMAIL = config("TEST_EMAIL", default="jsnow@westeros.com")
+TEST_PASSWORD = config("TEST_PASSWORD", default="snow")
+TEST_FIRST_NAME = config("TEST_FIRST_NAME", default="John")
+TEST_LAST_NAME = config("TEST_LAST_NAME", default="Snow")
 
-TEST_CLIENT_NAME = config('TEST_CLIENT_NAME', default='MyApp')
-TEST_CLIENT_ID = config('TEST_CLIENT_ID', default='client-id')
-TEST_CLIENT_SECRET = config('TEST_CLIENT_SECRET', default='client-secret')
+TEST_CLIENT_NAME = config("TEST_CLIENT_NAME", default="MyApp")
+TEST_CLIENT_ID = config("TEST_CLIENT_ID", default="client-id")
+TEST_CLIENT_SECRET = config("TEST_CLIENT_SECRET", default="client-secret")
 TEST_REDIRECT_URIS = config(
-    'TEST_REDIRECT_URIS',
-    default='http://localhost:8000/complete/generic-oauth2/'
+    "TEST_REDIRECT_URIS", default="http://localhost:8000/complete/generic-oauth2/"
 )
 
 # NOTE: This makes it safe to run both this provider and the client in the same
 # domain (such as localhost).
-SESSION_COOKIE_NAME = 'myauth_sessionid'
+SESSION_COOKIE_NAME = "myauth_sessionid"
 
 # # Configure CORs middleware as specified on
 # # https://django-oauth-toolkit.readthedocs.io/en/latest/tutorial/tutorial_01.html

@@ -1,7 +1,8 @@
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.management import BaseCommand
 from django.urls import reverse
-from django.conf import settings
+
 from oauth2_provider.models import Application
 
 
@@ -28,9 +29,7 @@ class Command(BaseCommand):
         try:
             result = Application.objects.get(client_id=settings.TEST_CLIENT_ID)
         except Application.DoesNotExist:
-            result = Application(
-                client_id=settings.TEST_CLIENT_ID,
-            )
+            result = Application(client_id=settings.TEST_CLIENT_ID,)
         result.name = settings.TEST_CLIENT_NAME
         result.client_secret = settings.TEST_CLIENT_SECRET
         result.redirect_uris = settings.TEST_REDIRECT_URIS
@@ -40,33 +39,33 @@ class Command(BaseCommand):
         return result
 
     def print_hello(self, user, app: Application):
-        separator = '-' * 79
-        host = 'http://127.0.0.1:8880'
+        separator = "-" * 79
+        host = "http://127.0.0.1:8880"
         message = (
-            f'\n'
-            f'{separator}\n'
-            f'\n'
-            f'OAuth 2.0 test server initialized.\n'
-            f'\n'
-            f'Admin UI URL:       {host}/admin\n'
-            f'Username:           {settings.TEST_USERNAME}\n'
-            f'Password:           {settings.TEST_PASSWORD}\n'
-            f'\n'
-            f'Application Credentials:\n'
-            f'Client ID:          {app.client_id}\n'
-            f'Client Secret:      {app.client_secret}\n'
-            f'\n'
-            f'OAuth 2.0 endpoints:\n'
+            f"\n"
+            f"{separator}\n"
+            f"\n"
+            f"OAuth 2.0 test server initialized.\n"
+            f"\n"
+            f"Admin UI URL:       {host}/admin\n"
+            f"Username:           {settings.TEST_USERNAME}\n"
+            f"Password:           {settings.TEST_PASSWORD}\n"
+            f"\n"
+            f"Application Credentials:\n"
+            f"Client ID:          {app.client_id}\n"
+            f"Client Secret:      {app.client_secret}\n"
+            f"\n"
+            f"OAuth 2.0 endpoints:\n"
             f'Authorize URL:      {host}{reverse("oauth2_provider:authorize")}\n'
             f'Token URL:          {host}{reverse("oauth2_provider:token")}\n'
             f'Revoke Token URL:   {host}{reverse("oauth2_provider:revoke-token")}\n'
             f'Introspect URL:     {host}{reverse("oauth2_provider:introspect")}\n'
-            f'\n'
-            f'Before the application can be used, you need to go to the '
-            f'admin interface and configure whitelisted redirect URIs.'
-            f'\n'
-            f'{separator}\n'
-            f'\n'
+            f"\n"
+            f"Before the application can be used, you need to go to the "
+            f"admin interface and configure whitelisted redirect URIs."
+            f"\n"
+            f"{separator}\n"
+            f"\n"
         )
         self.stdout.write(message)
 
