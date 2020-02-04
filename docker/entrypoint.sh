@@ -66,7 +66,7 @@ case $_CMD in
     runserver
     ;;
 
-  "runserver")
+  "run-dev")
     wait_for_db
     runserver
     ;;

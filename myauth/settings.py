@@ -133,7 +133,7 @@ TEST_PASSWORD = config('TEST_PASSWORD', default='snow')
 TEST_FIRST_NAME = config('TEST_FIRST_NAME', default='John')
 TEST_LAST_NAME = config('TEST_LAST_NAME', default='Snow')
 
-TEST_CLIENT_NAME = config('TEST_CLIENT_NAME', default='OAuth2 Example Application')
+TEST_CLIENT_NAME = config('TEST_CLIENT_NAME', default='MyApp')
 TEST_CLIENT_ID = config('TEST_CLIENT_ID', default='client-id')
 TEST_CLIENT_SECRET = config('TEST_CLIENT_SECRET', default='client-secret')
 TEST_REDIRECT_URIS = config(

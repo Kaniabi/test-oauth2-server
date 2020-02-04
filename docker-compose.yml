@@ -3,7 +3,7 @@ services:
   app:
     container_name: myauth-app
     build: .
-    image: kaniabi/myauth:dev
+    image: kaniabi/myauth:v1
     ports:
       - "8880:80"
     environment:
