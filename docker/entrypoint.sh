@@ -2,13 +2,14 @@
 
 set -e
 
-## REF: https://stackoverflow.com/questions/6174220/parse-url-in-shell-script
-PGFIELDS=($(echo $DATABASE_URL | awk '{split($0, arr, /[\/\@:]/); for (x in arr) { print arr[x] }}'))
-PGUSER=${PGFIELDS[1]}
-PGPASSWORD=${PGFIELDS[2]}
-PGHOST=${PGFIELDS[3]}
-PGPORT=${PGFIELDS[4]}
-PGDATABASE=${PGFIELDS[5]}
+_ORIGIN_BRANCH=${TRAVIS_BRANCH:-master}
+
+export PGFIELDS=($(echo $DATABASE_URL | awk '{split($0, arr, /[\/\@:]/); for (x in arr) { print arr[x] }}'))
+export PGUSER=${PGFIELDS[1]}
+export PGPASSWORD=${PGFIELDS[2]}
+export PGHOST=${PGFIELDS[3]}
+export PGPORT=${PGFIELDS[4]}
+export PGDATABASE=${PGFIELDS[5]}
 
 wait_for_db () {
   # Wait until postgresql is up and running.
@@ -25,20 +26,68 @@ wait_for_db () {
   done
 }
 
+runserver () {
+  python /app/manage.py migrate
+  python /app/manage.py collectstatic --no-input
+  python /app/manage.py initialize
+  exec python /app/manage.py runserver 0.0.0.0:8880
+}
+
+
 cd /app
-if [ $# -eq 0 ]; then
-    # No arguments, simply run the app
-    wait_for_db
-    createdb $PGNAME || true
-    python /app/manage.py migrate
-    python /app/manage.py initialize
-    nginx -g "daemon off;" &                            # Start http web-server
-    # exec uvicorn oauth2_server.asgi:application
 
-    # Start uvicorn
-    exec gunicorn -w 4 -k uvicorn.workers.UvicornWorker oauth2_server.asgi:application
-
+if [[ "$1" == "" ]]; then
+  _CMD="run-clean"
 else
-    # Pass all arguments to manage.py
-    python /app/manage.py "${@}"
+  _CMD=$1
+  shift
 fi
+
+case $_CMD in
+
+  "exec")
+    wait_for_db
+    exec "${@}"
+    ;;
+
+  "manage")
+    wait_for_db
+    python manage.py "${@}"
+    ;;
+
+  "python")
+    exec python "${@}"
+    ;;
+
+  "run-clean")
+    wait_for_db
+    dropdb $PGDATABASE || true
+    createdb $PGDATABASE || true
+    runserver
+    ;;
+
+  "runserver")
+    wait_for_db
+    runserver
+    ;;
+
+  "shell")
+    exec /bin/bash
+    ;;
+
+  "update-requirements")
+    pip install -U pip-tools
+    exec pip-compile --no-header --output-file=requirements.txt requirements.in
+    ;;
+
+  "--help")
+    print_help
+    ;;
+
+  *)
+    echo "ERROR: Unknown command: $_CMD."
+    print_help
+    exit 1
+    ;;
+
+esac

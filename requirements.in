@@ -1,0 +1,13 @@
+# Web framework
+django
+    # Implements oauth dance
+    django-oauth-toolkit
+
+# Database access (Postgres)
+psycopg2
+
+# Handles database URLs
+dj_database_url
+
+# Decouple configurations
+python-decouple

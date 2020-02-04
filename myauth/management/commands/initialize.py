@@ -13,6 +13,8 @@ class Command(BaseCommand):
         user = user_cls.objects.get_or_create(
             username=settings.TEST_USERNAME,
             email=settings.TEST_EMAIL,
+            first_name=settings.TEST_FIRST_NAME,
+            last_name=settings.TEST_LAST_NAME,
             is_superuser=True,
             is_staff=True,
             is_active=True,

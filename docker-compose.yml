@@ -1,25 +1,24 @@
 version: '3'
 services:
-  web:
+  app:
+    container_name: myauth-app
     build: .
-    image: kaniabi/test-oauth2-server:dev
+    image: kaniabi/myauth:dev
     ports:
       - "8880:80"
     environment:
-      - DATABASE_URL=postgres://oauth2:oauth2@db:5432/oauth2
+      - DATABASE_URL=postgres://myauth:myauth@db:5432/myauth
       - DJANGO_SECRET_KEY=secret123
-      - PGUSER=oauth2
-      - PGPASSWORD=oauth2
-      - PGDATABASE=oauth2
-      - PGHOST=db
+      - DJANGO_DEBUG=True
   db:
+    container_name: myauth-db
     image: uhinfra/postgis:v3
     environment:
-      - POSTGRES_USER=oauth2
-      - POSTGRES_PASSWORD=oauth2
-      - POSTGRES_DB=oauth2
+      - POSTGRES_USER=myauth
+      - POSTGRES_PASSWORD=myauth
+      - POSTGRES_DB=myauth
     volumes:
-      - test-oauth2-server-database:/var/lib/postgresql/data
+      - myauth-db:/var/lib/postgresql/data
 
 volumes:
-  test-oauth2-server-database:
+  myauth-db:

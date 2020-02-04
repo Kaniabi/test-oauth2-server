@@ -7,15 +7,14 @@ RUN apk add --update --no-cache \
     postgresql-client \
     bash
 
-ADD requires.txt /app/requires.txt
-RUN apk add --update --no-cache \
-    gcc linux-headers musl-dev make zlib-dev postgresql-dev \
-    && pip install -r /app/requires.txt
+ADD requirements.txt /app/requirements.txt
+RUN apk add --update --no-cache --virtual build-deps \
+    gcc linux-headers musl-dev make zlib-dev postgresql-dev  \
+    && pip install --no-cache -r /app/requirements.txt  \
+    && apk del build-deps
 
 ADD . /app
-RUN chmod +x /app/docker/entrypoint.sh
-
-ADD docker/etc/nginx.conf /etc/nginx/nginx.conf
-RUN python /app/manage.py collectstatic --noinput
+RUN chmod +x /app/docker/entrypoint.sh  \
+    && python /app/manage.py collectstatic --noinput
 
 ENTRYPOINT ["/app/docker/entrypoint.sh"]
