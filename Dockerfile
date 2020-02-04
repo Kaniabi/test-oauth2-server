@@ -1,18 +1,16 @@
 FROM python:3.8-alpine
 
+# Runtime dependencies
 RUN apk add --update --no-cache \
-    gcc \
-    linux-headers \
-    musl-dev \
-    make \
     nginx \
-    postgresql-dev \
-    postgresql-client \
     zlib \
-    zlib-dev
+    postgresql-client \
+    bash
 
 ADD requires.txt /app/requires.txt
-RUN pip install -r /app/requires.txt
+RUN apk add --update --no-cache \
+    gcc linux-headers musl-dev make zlib-dev postgresql-dev \
+    && pip install -r /app/requires.txt
 
 ADD . /app
 RUN chmod +x /app/docker/entrypoint.sh
