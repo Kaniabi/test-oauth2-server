@@ -90,10 +90,10 @@ DATABASES = {
 
 _password_validation = "django.contrib.auth.password_validation"
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": (f"{_password_validation}.UserAttributeSimilarityValidator",)},
-    {"NAME": (f"{_password_validation}.MinimumLengthValidator",)},
-    {"NAME": (f"{_password_validation}.CommonPasswordValidator",)},
-    {"NAME": (f"{_password_validation}.NumericPasswordValidator",)},
+    {"NAME": f"{_password_validation}.UserAttributeSimilarityValidator"},
+    {"NAME": f"{_password_validation}.MinimumLengthValidator"},
+    {"NAME": f"{_password_validation}.CommonPasswordValidator"},
+    {"NAME": f"{_password_validation}.NumericPasswordValidator"},
 ]
 
 
