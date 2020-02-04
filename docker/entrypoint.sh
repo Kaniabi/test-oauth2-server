@@ -61,8 +61,12 @@ case $_CMD in
 
   "run-clean")
     wait_for_db
+    echo "Recreating database $PGDATABASE"
+    echo "- dropdb"
     dropdb $PGDATABASE || true
+    echo "- createdb"
     createdb $PGDATABASE || true
+    echo "Run server"
     runserver
     ;;
 

@@ -3,9 +3,9 @@ services:
   app:
     container_name: myauth-app
     build: .
-    image: kaniabi/myauth:v1
+    image: kaniabi/myauth:v2
     ports:
-      - "8880:80"
+      - "8880:8880"
     environment:
       - DATABASE_URL=postgres://myauth:myauth@db:5432/myauth
       - DJANGO_SECRET_KEY=secret123
